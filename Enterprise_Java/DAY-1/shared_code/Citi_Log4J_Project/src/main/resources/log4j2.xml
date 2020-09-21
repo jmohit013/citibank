@@ -5,16 +5,43 @@
     </Properties>
     <Appenders>
     
+    
+		<RollingFile
+		    name="rollingFile"
+		    fileName="${basePath}/application.log"
+		    filePattern="${basePath}/application.%i.log.gz"
+		    ignoreExceptions="false">
+		    <PatternLayout>
+		        <Pattern>%d{yyyy-MM-dd HH:mm:ss} %-5p %m%n</Pattern>
+		    </PatternLayout>
+		    <Policies>
+		        <SizeBasedTriggeringPolicy size="1KB" />
+		    </Policies>
+		    <DefaultRolloverStrategy max="5" />
+		</RollingFile>    
+    
+    
         <!-- Console Appender -->
         <Console name="STDOUT" target="SYSTEM_OUT">
             <PatternLayout pattern="%-5p | %d{yyyy-MM-dd HH:mm:ss} | [%t] %C{1} (%F:%L) - %m%n" />
         </Console>
-        
+
+        <!-- File Appender -->
+        <File name="FILE" fileName="${basePath}/logfile.json" append="true">
+        	<!-- <PatternLayout pattern="%-5p | %d{yyyy-MM-dd HH:mm:ss} | [%t] %C{2} (%F:%L) - %m%n" /> -->
+        	<!-- <HTMLLayout charset="UTF-8" title="Banking App" locationInfo="true" /> -->
+        	<JsonLayout complete="true" compact="false">
+            	<KeyValuePair key="StudytonightField" value="studytonightValue" />
+        	</JsonLayout>
+        	
+		</File>    
+		    
     </Appenders>
     <Loggers>
         <Logger name="com.bank" level="trace" />
         <Root level="error">
             <AppenderRef ref="STDOUT" />
+            <AppenderRef ref="rollingFile"></AppenderRef>
         </Root>
     </Loggers>
 </Configuration>
